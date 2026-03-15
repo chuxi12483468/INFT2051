@@ -1,0 +1,37 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="INFT2051.SettingPage"
+             Title="Settings">
+
+    <VerticalStackLayout Padding="30" Spacing="20">
+
+        <Label
+            Text="Settings"
+            FontSize="32"
+            HorizontalOptions="Center"/>
+
+        <!-- PIN 修改 -->
+        <Label Text="PIN Lock"/>
+
+        <Entry
+            Placeholder="Enter new PIN"
+            Keyboard="Numeric"
+            MaxLength="4"/>
+
+        <Button
+            Text="Update"/>
+
+        <!-- Daily Reminder -->
+        <Label Text="Daily Reminder"/>
+
+        <Switch/>
+
+        <!-- Export -->
+        <Button Text="Export to Text"/>
+
+        <!-- Back -->
+        <Button Text="Back"/>
+
+    </VerticalStackLayout>
+
+</ContentPage>

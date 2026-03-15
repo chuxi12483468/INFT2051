@@ -1,0 +1,52 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="INFT2051.DiaryEditPage"
+             Title="Diary">
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+
+            <Label
+                Text="Diary Edit"
+                FontSize="30"
+                HorizontalOptions="Center"/>
+
+            <Entry Placeholder="Title"/>
+
+            <DatePicker/>
+
+            <Editor
+                Placeholder="Write your diary..."
+                HeightRequest="150"/>
+
+            <Frame HeightRequest="200"
+                BackgroundColor="Gray">
+
+                <Label Text="Drawing Area (GraphicsView)"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"/>
+
+            </Frame>
+
+            <VerticalStackLayout Spacing="15">
+
+                <!-- Save + Delete in the same line -->
+                <HorizontalStackLayout
+                    Spacing="20"
+                    HorizontalOptions="Center">
+
+                    <Button Text="Save"/>
+                    <Button Text="Delete"/>
+
+                </HorizontalStackLayout>
+
+                <!-- Back single line in the middle -->
+                <Button
+                    Text="Back"
+                    HorizontalOptions="Center"
+                    WidthRequest="120"/>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
