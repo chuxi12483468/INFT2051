@@ -9,13 +9,17 @@ public partial class MainPage : ContentPage
 
     private async void Login_Clicked(object sender, EventArgs e)
     {
-        if (PinEntry.Text == "1234")
+        string enteredPin = PinEntry?.Text ?? string.Empty;
+        string savedPin = PinManager.GetPin();
+
+        if (enteredPin == savedPin)
         {
-            await DisplayAlert("Login", "Login Successful", "OK");
+            await DisplayAlertAsync("Login", "Login Successful", "OK");
+            await Shell.Current.GoToAsync(nameof(HomePage));
         }
         else
         {
-            await DisplayAlert("Error", "Wrong PIN", "OK");
+            await DisplayAlertAsync("Error", "Wrong PIN", "OK");
         }
     }
 }

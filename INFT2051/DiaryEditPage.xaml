@@ -10,22 +10,23 @@
                 FontSize="30"
                 HorizontalOptions="Center"/>
 
-            <Entry Placeholder="Title"/>
+            <Entry x:Name="TitleEntry"
+                   Placeholder="Title"/>
 
-            <DatePicker/>
+            <DatePicker x:Name="DiaryDatePicker"/>
 
-            <Editor
-                Placeholder="Write your diary..."
-                HeightRequest="150"/>
+            <Editor x:Name="ContentEditor"
+                    Placeholder="Write your diary..."
+                    HeightRequest="150"/>
 
-            <Frame HeightRequest="200"
-                BackgroundColor="Gray">
+            <Border HeightRequest="200"
+                    BackgroundColor="Gray">
 
                 <Label Text="Drawing Area (GraphicsView)"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"/>
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
 
-            </Frame>
+            </Border>
 
             <VerticalStackLayout Spacing="15">
 
@@ -34,8 +35,10 @@
                     Spacing="20"
                     HorizontalOptions="Center">
 
-                    <Button Text="Save"/>
-                    <Button Text="Delete"/>
+                    <Button Text="Save"
+                            Clicked="OnSaveClicked"/>
+                    <Button Text="Delete"
+                            Clicked="OnDeleteClicked"/>
 
                 </HorizontalStackLayout>
 
@@ -43,7 +46,8 @@
                 <Button
                     Text="Back"
                     HorizontalOptions="Center"
-                    WidthRequest="120"/>
+                    WidthRequest="120"
+                    Clicked="OnBackClicked"/>
 
             </VerticalStackLayout>
 

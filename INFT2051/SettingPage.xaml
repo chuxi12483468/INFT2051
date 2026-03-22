@@ -10,27 +10,31 @@
             FontSize="32"
             HorizontalOptions="Center"/>
 
-        <!-- PIN 修改 -->
+        <!-- PIN modification -->
         <Label Text="PIN Lock"/>
 
-        <Entry
-            Placeholder="Enter new PIN"
-            Keyboard="Numeric"
-            MaxLength="4"/>
+        <Entry x:Name="NewPinEntry"
+               Placeholder="Enter new PIN"
+               Keyboard="Numeric"
+               MaxLength="4"
+               IsPassword="True"/>
 
-        <Button
-            Text="Update"/>
+        <Button Text="Update"
+                Clicked="OnUpdatePinClicked"/>
 
         <!-- Daily Reminder -->
         <Label Text="Daily Reminder"/>
 
-        <Switch/>
+        <Switch x:Name="ReminderSwitch"
+                Toggled="OnReminderToggled"/>
 
         <!-- Export -->
-        <Button Text="Export to Text"/>
+        <Button Text="Export to Text"
+                Clicked="OnExportClicked"/>
 
         <!-- Back -->
-        <Button Text="Back"/>
+        <Button Text="Back"
+                Clicked="OnBackClicked"/>
 
     </VerticalStackLayout>
 

@@ -10,7 +10,8 @@
         <!-- Settings button -->
         <Button Text="Settings"
                 Grid.Row="0"
-                Grid.Column="1" />
+                Grid.Column="1"
+                Clicked="OnSettingsClicked"/>
 
         <!-- title -->
         <Label Text="My Diary"
@@ -27,13 +28,37 @@
             <Label Text="Recent Diaries"
                    FontSize="22"/>
 
-            <!-- occupy the position -->
-            <Frame HeightRequest="80"
-                   BorderColor="Gray">
-                <Label Text="User diary list will appear here"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
-            </Frame>
+            <CollectionView x:Name="RecentDiaryCollection"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="Gray"
+                                StrokeThickness="1"
+                                Padding="10"
+                                Margin="0,0,0,10">
+                            <VerticalStackLayout Spacing="8">
+
+                                <Label Text="{Binding Title}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"/>
+
+                                <Label Text="{Binding Date}"
+                                       FontSize="13"
+                                       TextColor="Gray"/>
+
+                                <Label Text="{Binding Preview}"
+                                       LineBreakMode="TailTruncation"
+                                       MaxLines="2"/>
+
+                                <Button Text="Edit"
+                                        HorizontalOptions="End"
+                                        Clicked="OnEditClicked"
+                                        CommandParameter="{Binding Id}"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
         </VerticalStackLayout>
 
@@ -41,7 +66,8 @@
         <Button Text="Create New Diary"
                 Grid.Row="3"
                 Grid.ColumnSpan="2"
-                Margin="0,20,0,0"/>
+                Margin="0,20,0,0"
+                Clicked="OnCreateDiaryClicked"/>
 
     </Grid>
 
