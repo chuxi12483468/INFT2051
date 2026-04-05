@@ -1,56 +1,101 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="INFT2051.DiaryEditPage"
-             Title="Diary">
-    <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="20">
+             Title="Edit Diary">
 
-            <Label
-                Text="Diary Edit"
-                FontSize="30"
-                HorizontalOptions="Center"/>
+    <Grid Padding="20" RowDefinitions="*,Auto,Auto">
 
-            <Entry x:Name="TitleEntry"
-                   Placeholder="Title"/>
-
-            <DatePicker x:Name="DiaryDatePicker"/>
-
-            <Editor x:Name="ContentEditor"
-                    Placeholder="Write your diary..."
-                    HeightRequest="150"/>
-
-            <Border HeightRequest="200"
-                    BackgroundColor="Gray">
-
-                <Label Text="Drawing Area (GraphicsView)"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
-
-            </Border>
-
+        <!-- Top content area -->
+        <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="15">
 
-                <!-- Save + Delete in the same line -->
-                <HorizontalStackLayout
-                    Spacing="20"
-                    HorizontalOptions="Center">
+                <Label Text="Diary Title" />
+                <Entry x:Name="TitleEntry"
+                       Placeholder="Enter diary title" />
 
-                    <Button Text="Save"
-                            Clicked="OnSaveClicked"/>
-                    <Button Text="Delete"
-                            Clicked="OnDeleteClicked"/>
+                <Label Text="Date" />
+                <DatePicker x:Name="DiaryDatePicker" />
 
-                </HorizontalStackLayout>
-
-                <!-- Back single line in the middle -->
-                <Button
-                    Text="Back"
-                    HorizontalOptions="Center"
-                    WidthRequest="120"
-                    Clicked="OnBackClicked"/>
+                <Label Text="Content" />
+                <Editor x:Name="ContentEditor"
+                        Placeholder="Write your diary here..."
+                        AutoSize="TextChanges"
+                        MinimumHeightRequest="250" />
 
             </VerticalStackLayout>
+        </ScrollView>
 
-        </VerticalStackLayout>
-    </ScrollView>
+        <!-- Drawing area -->
+        <Border Grid.Row="1"
+                HeightRequest="320"
+                Stroke="Black"
+                StrokeThickness="1"
+                BackgroundColor="LightGray"
+                Padding="10"
+                Margin="0,10,0,10">
+
+            <VerticalStackLayout Spacing="10">
+
+                <Label Text="Drawing Area"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
+
+                <HorizontalStackLayout Spacing="10"
+                                       HorizontalOptions="Center">
+
+                    <Button Text="Black"
+                            Clicked="OnBlackColorClicked" />
+
+                    <Button Text="Red"
+                            Clicked="OnRedColorClicked" />
+
+                    <Button Text="Blue"
+                            Clicked="OnBlueColorClicked" />
+
+                    <Button Text="Eraser"
+                            Clicked="OnEraserClicked" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Spacing="10"
+                                       HorizontalOptions="Center">
+
+                    <Button Text="Thin"
+                            Clicked="OnThinClicked" />
+
+                    <Button Text="Medium"
+                            Clicked="OnMediumClicked" />
+
+                    <Button Text="Thick"
+                            Clicked="OnThickClicked" />
+
+                    <Button Text="Clear"
+                            Clicked="OnClearDrawingClicked" />
+                </HorizontalStackLayout>
+
+                <GraphicsView x:Name="DiaryGraphicsView"
+                              HeightRequest="200"
+                              BackgroundColor="White"
+                              StartInteraction="OnDrawingStart"
+                              DragInteraction="OnDrawingDrag"
+                              EndInteraction="OnDrawingEnd" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Bottom buttons -->
+        <HorizontalStackLayout Grid.Row="2"
+                               Spacing="15"
+                               HorizontalOptions="Center"
+                               Margin="0,10,0,0">
+
+            <Button Text="Save"
+                    Clicked="OnSaveClicked" />
+
+            <Button Text="Delete"
+                    Clicked="OnDeleteClicked" />
+
+            <Button Text="Back"
+                    Clicked="OnBackClicked" />
+        </HorizontalStackLayout>
+
+    </Grid>
 </ContentPage>

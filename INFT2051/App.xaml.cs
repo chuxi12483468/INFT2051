@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace INFT2051
 {
@@ -7,6 +8,10 @@ namespace INFT2051
         public App()
         {
             InitializeComponent();
+
+            var culture = new CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

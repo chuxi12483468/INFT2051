@@ -3,28 +3,34 @@
              x:Class="INFT2051.MainPage"
              Title="Login">
 
-    <VerticalStackLayout Padding="30" Spacing="20">
+    <ScrollView>
+        <Grid Padding="{OnPlatform Android='24,30', WinUI='30'}">
+            <VerticalStackLayout Spacing="20"
+                                 VerticalOptions="Center"
+                                 MaximumWidthRequest="420">
 
-        <Label
-            Text="My Diary"
-            FontSize="36"
-            HorizontalOptions="Center"/>
+                <Label
+                    Text="My Diary"
+                    FontSize="36"
+                    HorizontalOptions="Center"/>
 
-        <Label
-            Text="Enter 4-digit PIN"
-            FontSize="18"
-            HorizontalOptions="Center"/>
+                <Label
+                    Text="Enter 4-digit PIN"
+                    FontSize="18"
+                    HorizontalOptions="Center"/>
 
-        <Entry
-            x:Name="PinEntry"
-            Placeholder="4 digit PIN"
-            Keyboard="Numeric"
-            MaxLength="4"/>
+                <Entry
+                    x:Name="PinEntry"
+                    Placeholder="4 digit PIN"
+                    Keyboard="Numeric"
+                    MaxLength="4"/>
 
-        <Button
-            Text="LOGIN"
-            Clicked="Login_Clicked"/>
+                <Button
+                    Text="LOGIN"
+                    Clicked="Login_Clicked"/>
 
-    </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
 
 </ContentPage>

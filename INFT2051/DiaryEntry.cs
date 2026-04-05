@@ -12,4 +12,6 @@ public class DiaryEntry
     public string Content { get; set; } = string.Empty;
 
     public DateTime Date { get; set; }
+
+    public string DrawingData { get; set; } = string.Empty;
 }

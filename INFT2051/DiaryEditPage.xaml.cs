@@ -6,6 +6,9 @@ public partial class DiaryEditPage : ContentPage
     private readonly DiaryDatabase _diaryDatabase;
     private DiaryEntry? _currentDiary;
 
+    private readonly DrawingCanvas _drawingCanvas = new();
+    private bool _isDrawing;
+
     private int _diaryId;
     public int DiaryId
     {
@@ -23,9 +26,10 @@ public partial class DiaryEditPage : ContentPage
         _diaryDatabase = diaryDatabase;
 
         if (DiaryDatePicker != null)
-        {
             DiaryDatePicker.Date = DateTime.Now;
-        }
+
+        if (DiaryGraphicsView != null)
+            DiaryGraphicsView.Drawable = _drawingCanvas;
     }
 
     private async Task LoadDiaryAsync()
@@ -45,7 +49,80 @@ public partial class DiaryEditPage : ContentPage
 
             if (DiaryDatePicker != null)
                 DiaryDatePicker.Date = _currentDiary.Date;
+
+            _drawingCanvas.Deserialize(_currentDiary.DrawingData);
+            DiaryGraphicsView?.Invalidate();
         }
+    }
+
+    private void OnDrawingStart(object? sender, TouchEventArgs e)
+    {
+        if (e.Touches.Length == 0)
+            return;
+
+        var point = e.Touches[0];
+        _drawingCanvas.StartStroke((float)point.X, (float)point.Y);
+        _isDrawing = true;
+        DiaryGraphicsView?.Invalidate();
+    }
+
+    private void OnDrawingDrag(object? sender, TouchEventArgs e)
+    {
+        if (!_isDrawing || e.Touches.Length == 0)
+            return;
+
+        var point = e.Touches[0];
+        _drawingCanvas.AddPoint((float)point.X, (float)point.Y);
+        DiaryGraphicsView?.Invalidate();
+    }
+
+    private void OnDrawingEnd(object? sender, TouchEventArgs e)
+    {
+        _isDrawing = false;
+    }
+
+    private void OnBlackColorClicked(object sender, EventArgs e)
+    {
+        _drawingCanvas.IsEraserMode = false;
+        _drawingCanvas.CurrentColor = Colors.Black;
+    }
+
+    private void OnRedColorClicked(object sender, EventArgs e)
+    {
+        _drawingCanvas.IsEraserMode = false;
+        _drawingCanvas.CurrentColor = Colors.Red;
+    }
+
+    private void OnBlueColorClicked(object sender, EventArgs e)
+    {
+        _drawingCanvas.IsEraserMode = false;
+        _drawingCanvas.CurrentColor = Colors.Blue;
+    }
+
+    private void OnEraserClicked(object sender, EventArgs e)
+    {
+        _drawingCanvas.IsEraserMode = true;
+    }
+
+    private void OnThinClicked(object sender, EventArgs e)
+    {
+        _drawingCanvas.CurrentStrokeSize = 2;
+    }
+
+    private void OnMediumClicked(object sender, EventArgs e)
+    {
+        _drawingCanvas.CurrentStrokeSize = 4;
+    }
+
+    private void OnThickClicked(object sender, EventArgs e)
+    {
+        _drawingCanvas.CurrentStrokeSize = 7;
+    }
+
+    private void OnClearDrawingClicked(object sender, EventArgs e)
+    {
+        _drawingCanvas.Clear();
+        DiaryGraphicsView?.Invalidate();
     }
 
     private async void OnSaveClicked(object sender, EventArgs e)
@@ -55,13 +132,12 @@ public partial class DiaryEditPage : ContentPage
         DateTime selectedDate = DiaryDatePicker?.Date ?? DateTime.Now;
 
         if (_currentDiary == null)
-        {
             _currentDiary = new DiaryEntry();
-        }
 
         _currentDiary.Title = title;
         _currentDiary.Content = content;
         _currentDiary.Date = selectedDate;
+        _currentDiary.DrawingData = _drawingCanvas.Serialize();
 
         await _diaryDatabase.SaveEntryAsync(_currentDiary);
 
@@ -95,6 +171,9 @@ public partial class DiaryEditPage : ContentPage
 
         if (DiaryDatePicker != null)
             DiaryDatePicker.Date = DateTime.Now;
+
+        _drawingCanvas.Clear();
+        DiaryGraphicsView?.Invalidate();
 
         await DisplayAlertAsync("Deleted", "Diary content cleared.", "OK");
     }

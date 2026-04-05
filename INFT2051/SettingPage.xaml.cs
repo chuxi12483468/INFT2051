@@ -5,11 +5,106 @@ namespace INFT2051;
 public partial class SettingPage : ContentPage
 {
     private readonly DiaryDatabase _diaryDatabase;
+    private bool _isInitializingReminderPickers;
 
     public SettingPage(DiaryDatabase diaryDatabase)
     {
         InitializeComponent();
         _diaryDatabase = diaryDatabase;
+
+        InitialiseReminderPickers();
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (ReminderSwitch != null)
+        {
+            ReminderSwitch.Toggled -= OnReminderToggled;
+            ReminderSwitch.IsToggled = ReminderSettings.IsReminderEnabled();
+            ReminderSwitch.Toggled += OnReminderToggled;
+        }
+
+        LoadReminderTimeToPickers();
+    }
+
+    private void InitialiseReminderPickers()
+    {
+        if (HourPicker != null && HourPicker.Items.Count == 0)
+        {
+            for (int i = 1; i <= 12; i++)
+            {
+                HourPicker.Items.Add(i.ToString("D2"));
+            }
+        }
+
+        if (MinutePicker != null && MinutePicker.Items.Count == 0)
+        {
+            for (int i = 0; i < 60; i++)
+            {
+                MinutePicker.Items.Add(i.ToString("D2"));
+            }
+        }
+    }
+
+    private void LoadReminderTimeToPickers()
+    {
+        if (AmPmPicker == null || HourPicker == null || MinutePicker == null)
+            return;
+
+        _isInitializingReminderPickers = true;
+
+        var savedTime = ReminderSettings.GetReminderTime();
+        int hour24 = savedTime.Hours;
+        int minute = savedTime.Minutes;
+
+        string ampm = hour24 >= 12 ? "PM" : "AM";
+        int hour12 = hour24 % 12;
+        if (hour12 == 0)
+            hour12 = 12;
+
+        AmPmPicker.SelectedIndex = ampm == "AM" ? 0 : 1;
+        HourPicker.SelectedItem = hour12.ToString("D2");
+        MinutePicker.SelectedItem = minute.ToString("D2");
+
+        _isInitializingReminderPickers = false;
+    }
+
+    private TimeSpan GetSelectedReminderTime()
+    {
+        if (AmPmPicker == null || HourPicker == null || MinutePicker == null)
+            return new TimeSpan(20, 0, 0);
+
+        string ampm = AmPmPicker.SelectedItem?.ToString() ?? "PM";
+        int hour12 = int.TryParse(HourPicker.SelectedItem?.ToString(), out int h) ? h : 8;
+        int minute = int.TryParse(MinutePicker.SelectedItem?.ToString(), out int m) ? m : 0;
+
+        int hour24;
+        if (ampm == "AM")
+        {
+            hour24 = hour12 == 12 ? 0 : hour12;
+        }
+        else
+        {
+            hour24 = hour12 == 12 ? 12 : hour12 + 12;
+        }
+
+        return new TimeSpan(hour24, minute, 0);
+    }
+
+    private void OnReminderPickerChanged(object? sender, EventArgs e)
+    {
+        if (_isInitializingReminderPickers)
+            return;
+
+        var selectedTime = GetSelectedReminderTime();
+        ReminderSettings.SetReminderTime(selectedTime);
+
+        if (ReminderSettings.IsReminderEnabled())
+        {
+            ReminderService.ScheduleDailyReminder(selectedTime);
+        }
     }
 
     private async void OnUpdatePinClicked(object sender, EventArgs e)
@@ -30,15 +125,21 @@ public partial class SettingPage : ContentPage
         await DisplayAlertAsync("Success", "PIN updated successfully.", "OK");
     }
 
-    private async void OnReminderToggled(object sender, ToggledEventArgs e)
+    private async void OnReminderToggled(object? sender, ToggledEventArgs e)
     {
+        ReminderSettings.SetReminderEnabled(e.Value);
+
         if (e.Value)
         {
-            await DisplayAlertAsync("Reminder", "Daily reminder turned on.", "OK");
+            VibrationService.VibrateShort();
+            ReminderService.ScheduleDailyReminder(GetSelectedReminderTime());
+            await DisplayAlertAsync("Reminder", "Daily reminder has been enabled.", "OK");
         }
         else
         {
-            await DisplayAlertAsync("Reminder", "Daily reminder turned off.", "OK");
+            VibrationService.Cancel();
+            ReminderService.CancelDailyReminder();
+            await DisplayAlertAsync("Reminder", "Daily reminder has been disabled.", "OK");
         }
     }
 
