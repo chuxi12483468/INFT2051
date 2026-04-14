@@ -29,6 +29,14 @@
                     Text="LOGIN"
                     Clicked="Login_Clicked"/>
 
+                <Button
+                    Text="Forgot PIN?"
+                    Clicked="ForgotPin_Clicked"
+                    BackgroundColor="Transparent"
+                    TextColor="Gray"
+                    FontSize="12"
+                    HorizontalOptions="Center" />
+
             </VerticalStackLayout>
         </Grid>
     </ScrollView>

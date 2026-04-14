@@ -7,10 +7,9 @@
         <VerticalStackLayout Padding="{OnPlatform Android='20,24', WinUI='30'}"
                              Spacing="20">
 
-            <Label
-                Text="Settings"
-                FontSize="32"
-                HorizontalOptions="Center"/>
+            <Label Text="Settings"
+                   FontSize="32"
+                   HorizontalOptions="Center"/>
 
             <!-- PIN modification -->
             <Label Text="PIN Lock"/>
@@ -23,6 +22,17 @@
 
             <Button Text="Update"
                     Clicked="OnUpdatePinClicked"/>
+            
+            <Label Text="Security Question"
+                   FontAttributes="Bold" />
+
+            <Label Text="What is your favourite colour?" />
+
+            <Entry x:Name="SecurityAnswerEntry"
+                   Placeholder="Enter your answer" />
+
+            <Button Text="Save Recovery Answer"
+                    Clicked="OnSaveRecoveryAnswerClicked" />
 
             <!-- Daily Reminder -->
             <Label Text="Daily Reminder"/>

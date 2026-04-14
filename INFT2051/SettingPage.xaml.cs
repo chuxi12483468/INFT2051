@@ -124,15 +124,31 @@ public partial class SettingPage : ContentPage
 
         await DisplayAlertAsync("Success", "PIN updated successfully.", "OK");
     }
+    private async void OnSaveRecoveryAnswerClicked(object sender, EventArgs e)
+    {
+        string answer = SecurityAnswerEntry?.Text ?? string.Empty;
 
+        if (string.IsNullOrWhiteSpace(answer))
+        {
+            await DisplayAlertAsync("Error", "Please enter an answer.", "OK");
+            return;
+        }
+
+        PinManager.SetSecurityAnswer(answer);
+
+        if (SecurityAnswerEntry != null)
+            SecurityAnswerEntry.Text = string.Empty;
+
+        await DisplayAlertAsync("Success", "Recovery answer saved successfully.", "OK");
+    }
     private async void OnReminderToggled(object? sender, ToggledEventArgs e)
     {
         ReminderSettings.SetReminderEnabled(e.Value);
 
         if (e.Value)
         {
-            VibrationService.VibrateShort();
-            ReminderService.ScheduleDailyReminder(GetSelectedReminderTime());
+            VibrationService.VibrateShort();//Trigger vibration feedback when reminder is enabled
+            ReminderService.ScheduleDailyReminder(GetSelectedReminderTime());//Sechedule daily reminder notification
             await DisplayAlertAsync("Reminder", "Daily reminder has been enabled.", "OK");
         }
         else
@@ -143,7 +159,7 @@ public partial class SettingPage : ContentPage
         }
     }
 
-    private async void OnExportClicked(object sender, EventArgs e)
+    private async void OnExportClicked(object sender, EventArgs e)//Export all diary entries to a text file
     {
         var diaries = await _diaryDatabase.GetAllEntriesAsync();
 
@@ -153,7 +169,7 @@ public partial class SettingPage : ContentPage
             return;
         }
 
-        var sb = new StringBuilder();
+        var sb = new StringBuilder();//Convert diary entries into text format
 
         foreach (var diary in diaries)
         {
@@ -167,9 +183,9 @@ public partial class SettingPage : ContentPage
         string fileName = $"DiaryExport_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
         string filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
 
-        File.WriteAllText(filePath, sb.ToString());
+        File.WriteAllText(filePath, sb.ToString());//Save content to TEXT file in local storage
 
-        await Share.Default.RequestAsync(new ShareFileRequest
+        await Share.Default.RequestAsync(new ShareFileRequest //Open system share dialog to export file
         {
             Title = "Export Diaries",
             File = new ShareFile(filePath)

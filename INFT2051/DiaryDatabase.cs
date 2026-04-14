@@ -5,7 +5,7 @@ namespace INFT2051;
 public class DiaryDatabase
 {
     private SQLiteAsyncConnection? _database;
-
+    //Initialize SQLite database connection
     private async Task Init()
     {
         if (_database != null)
@@ -41,7 +41,7 @@ public class DiaryDatabase
             .Where(d => d.Id == id)
             .FirstOrDefaultAsync();
     }
-
+    //save diary entry to database
     public async Task<int> SaveEntryAsync(DiaryEntry entry)
     {
         await Init();
@@ -51,7 +51,7 @@ public class DiaryDatabase
 
         return await _database!.InsertAsync(entry);
     }
-
+    //delect diary entry from SQLite database
     public async Task<int> DeleteEntryAsync(DiaryEntry entry)
     {
         await Init();

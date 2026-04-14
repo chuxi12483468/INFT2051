@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="INFT2051.ForgotPinPage"
+             Title="Forgot PIN">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+
+            <Label
+                Text="Forgot PIN"
+                FontSize="28"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Security Question"
+                FontAttributes="Bold" />
+
+            <Label
+                Text="What is your favourite colour?" />
+
+            <Entry
+                x:Name="AnswerEntry"
+                Placeholder="Enter your answer" />
+
+            <Label
+                Text="New PIN"
+                FontAttributes="Bold" />
+
+            <Entry
+                x:Name="NewPinEntry"
+                Placeholder="Enter new 4-digit PIN"
+                Keyboard="Numeric"
+                MaxLength="4"
+                IsPassword="True" />
+
+            <Label
+                Text="Confirm PIN"
+                FontAttributes="Bold" />
+
+            <Entry
+                x:Name="ConfirmPinEntry"
+                Placeholder="Confirm new PIN"
+                Keyboard="Numeric"
+                MaxLength="4"
+                IsPassword="True" />
+
+            <Button
+                Text="Reset PIN"
+                Clicked="OnResetPinClicked" />
+
+            <Button
+                Text="Back"
+                Clicked="OnBackClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
