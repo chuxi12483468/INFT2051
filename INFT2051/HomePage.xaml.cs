@@ -52,6 +52,44 @@ public partial class HomePage : ContentPage
         RecentDiaryCollection.ItemsSource = recentItems;
     }
 
+    // Show diaries based on the selected date
+    private async void OnViewDiaryByDateClicked(object sender, EventArgs e)
+    {
+        DateTime selectedDate = SearchDatePicker.Date ?? DateTime.Now;
+
+        var allDiaries = await _diaryDatabase.GetAllEntriesAsync();
+
+        var matchedDiaries = allDiaries
+            .Where(d => d.Date.Date == selectedDate.Date)
+            .ToList();
+
+        if (matchedDiaries.Count == 0)
+        {
+            await DisplayAlertAsync(
+                "Diary",
+                "No diary found for this date.",
+                "OK");
+
+            return;
+        }
+
+        string message = string.Empty;
+
+        foreach (var diary in matchedDiaries)
+        {
+            message += $"Title: {diary.Title}\n";
+            message += $"Date: {diary.Date:dd/MM/yyyy}\n";
+            message += "Content:\n";
+            message += $"{diary.Content}\n\n";
+            message += "--------------------\n\n";
+        }
+
+        await DisplayAlertAsync(
+            $"Diaries on {selectedDate:dd/MM/yyyy}",
+            message,
+            "OK");
+    }
+
     // Navigate to create a new diary entry
     private async void OnCreateDiaryClicked(object sender, EventArgs e)
     {

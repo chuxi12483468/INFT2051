@@ -5,7 +5,7 @@
 
     <ScrollView>
         <Grid Padding="{OnPlatform Android='20,24', WinUI='30'}"
-              RowDefinitions="Auto,Auto,*,Auto"
+              RowDefinitions="Auto,Auto,Auto,*,Auto"
               ColumnDefinitions="*,Auto"
               RowSpacing="16">
 
@@ -22,8 +22,23 @@
                    Grid.Row="1"
                    Grid.ColumnSpan="2" />
 
-            <!-- Recent Diaries -->
+            <!-- Search diary by selected date -->
             <VerticalStackLayout Grid.Row="2"
+                                 Grid.ColumnSpan="2"
+                                 Spacing="10">
+
+                <Label Text="View Diary by Date"
+                       FontSize="20"/>
+
+                <DatePicker x:Name="SearchDatePicker"/>
+
+                <Button Text="View Selected Date Diary"
+                        Clicked="OnViewDiaryByDateClicked"/>
+
+            </VerticalStackLayout>
+
+            <!-- Recent Diaries -->
+            <VerticalStackLayout Grid.Row="3"
                                  Grid.ColumnSpan="2"
                                  Spacing="15">
 
@@ -66,7 +81,7 @@
 
             <!-- put create diary on the bottom -->
             <Button Text="Create New Diary"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Grid.ColumnSpan="2"
                     Margin="0,20,0,0"
                     Clicked="OnCreateDiaryClicked"/>
