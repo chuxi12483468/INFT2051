@@ -16,7 +16,7 @@ public class DiaryDatabase
 
         await _database.CreateTableAsync<DiaryEntry>();
     }
-
+    // Retrieve all diary entries from the database
     public async Task<List<DiaryEntry>> GetAllEntriesAsync()
     {
         await Init();
@@ -24,7 +24,7 @@ public class DiaryDatabase
             .OrderByDescending(d => d.Date)
             .ToListAsync();
     }
-
+    // Retrieve a limited number of recent diary entries
     public async Task<List<DiaryEntry>> GetRecentEntriesAsync(int count = 3)
     {
         await Init();
